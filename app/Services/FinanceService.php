@@ -98,6 +98,41 @@ class FinanceService
         return implode("\n", $lines);
     }
 
+    public function buildRecapCustomDays(string $chatId, int $days): string
+    {
+        $now   = Carbon::now(config('app.timezone'));
+        $end   = $now->format('Y-m-d');
+        $start = $now->copy()->subDays($days - 1)->format('Y-m-d');
+        $label = "{$days} Hari Terakhir";
+
+        $expense = $this->txRepo->totalByRange($chatId, 'expense', $start, $end);
+        $income  = $this->txRepo->totalByRange($chatId, 'income',  $start, $end);
+        $net     = $income - $expense;
+
+        $lines = ["📊 <b>Rekap {$label}</b> ({$start} s/d {$end})\n"];
+        $lines[] = '💸 Pengeluaran: ' . rp($expense);
+        $lines[] = '💰 Pemasukan: '   . rp($income);
+        $lines[] = '📈 Net: '         . rp($net);
+
+        $categories = $this->txRepo->categoryBreakdown($chatId, $start, $end);
+        if (!empty($categories)) {
+            $lines[] = "\n<b>Kategori:</b>";
+            foreach ($categories as $cat) {
+                $lines[] = "  · {$cat->category}: " . rp((int) $cat->sum);
+            }
+        }
+
+        $items = $this->txRepo->itemBreakdown($chatId, $start, $end);
+        if (!empty($items)) {
+            $lines[]  = "\n<b>Top Item:</b>";
+            foreach (array_slice($items, 0, 3) as $item) {
+                $lines[] = "  · {$item->name} — " . rp((int) $item->total) . " ({$item->times}x)";
+            }
+        }
+
+        return implode("\n", $lines);
+    }
+
     public function buildSisaText(string $chatId, string $period = 'mingguan'): string
     {
         $budgets = $this->settingsRepo->getBudgets($chatId);

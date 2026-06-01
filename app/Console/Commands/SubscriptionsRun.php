@@ -7,6 +7,7 @@ use App\Repositories\TransactionRepository;
 use App\Repositories\ActivityLogRepository;
 use App\Services\TelegramService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class SubscriptionsRun extends Command
 {
@@ -15,64 +16,78 @@ class SubscriptionsRun extends Command
 
     public function handle(TelegramService $telegram, ActivityLogRepository $activityLog): void
     {
-        $today  = today_wita();
-        $month  = now(config('app.timezone'))->format('Y-m');
+        $today    = today_wita();
+        $month    = now(config('app.timezone'))->format('Y-m');
+        $todayDay = (int) now(config('app.timezone'))->format('j');
 
         $subRepo = new SubscriptionRepository($activityLog);
         $txRepo  = new TransactionRepository($activityLog);
 
-        // Auto-charge
-        $due = $subRepo->dueToCharge($today);
-        foreach ($due as $sub) {
-            try {
-                $txRepo->create([
-                    'chat_id'   => $sub->chat_id,
-                    'type'      => 'expense',
-                    'wallet_id' => $sub->wallet_id,
-                    'date'      => $today,
-                    'total'     => (int) $sub->amount,
-                    'category'  => $sub->category,
-                    'note'      => "Langganan: {$sub->name}",
-                ]);
-                $subRepo->markCharged((int) $sub->id, $month);
-                $telegram->sendMessage(
-                    (string) $sub->chat_id,
-                    "📅 <b>Langganan otomatis:</b> {$sub->name}\nNominal: " . rp((int) $sub->amount) . ' telah dicatat.'
-                );
-                $this->line("[subscriptions:run] Charged: {$sub->name} ({$sub->chat_id})");
-            } catch (\Throwable $e) {
-                \Illuminate\Support\Facades\Log::error('SubscriptionsRun charge failed', [
-                    'sub_id' => $sub->id,
-                    'error'  => $e->getMessage(),
-                ]);
-            }
-        }
+        $allActive = DB::select('SELECT * FROM subscriptions WHERE active = 1');
 
-        // Reminder sebelum jatuh tempo
-        $todayDay    = (int) now(config('app.timezone'))->format('j');
-        $remindToday = $subRepo->dueReminderSimple($todayDay);
+        foreach ($allActive as $sub) {
+            $chargeDay = (int) $sub->day_of_month;
+            $daysUntil = $chargeDay - $todayDay;
 
-        foreach ($remindToday as $sub) {
-            // Hanya kirim reminder jika hari ini = hari tagih - reminder_days_before
-            $chargeDay    = (int) $sub->day_of_month;
-            $reminderDay  = (int) $sub->reminder_days_before;
-            $targetDay    = $chargeDay - $reminderDay;
-
-            if ($targetDay <= 0 || $todayDay !== $targetDay) {
-                continue;
+            // Reminder H-3
+            if ($daysUntil === 3) {
+                try {
+                    $telegram->sendMessage(
+                        (string) $sub->chat_id,
+                        "📅 <b>Reminder Langganan</b>\n"
+                        . "3 hari lagi: <b>{$sub->name}</b>\n"
+                        . "Nominal: " . rp((int) $sub->amount) . " (tgl {$chargeDay})"
+                    );
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::error('SubscriptionsRun reminder H-3 failed', ['sub_id' => $sub->id, 'error' => $e->getMessage()]);
+                }
             }
 
-            try {
-                $telegram->sendMessage(
-                    (string) $sub->chat_id,
-                    "⚠️ <b>Pengingat Langganan:</b> {$sub->name}\n"
-                    . "Jatuh tempo tgl {$chargeDay}, " . rp((int) $sub->amount) . '.'
+            // Reminder H-1
+            if ($daysUntil === 1) {
+                try {
+                    $telegram->sendMessage(
+                        (string) $sub->chat_id,
+                        "⚠️ <b>Reminder Langganan</b>\n"
+                        . "Besok tagih: <b>{$sub->name}</b>\n"
+                        . "Nominal: " . rp((int) $sub->amount) . " — siapkan saldonya!"
+                    );
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::error('SubscriptionsRun reminder H-1 failed', ['sub_id' => $sub->id, 'error' => $e->getMessage()]);
+                }
+            }
+
+            // Hari H — auto-charge
+            if ($daysUntil === 0) {
+                $alreadyCharged = DB::selectOne(
+                    'SELECT id FROM subscriptions WHERE id = ? AND last_charged_month = ?',
+                    [$sub->id, $month]
                 );
-            } catch (\Throwable $e) {
-                \Illuminate\Support\Facades\Log::error('SubscriptionsRun reminder failed', [
-                    'sub_id' => $sub->id,
-                    'error'  => $e->getMessage(),
-                ]);
+
+                if ($alreadyCharged) {
+                    continue;
+                }
+
+                try {
+                    $txRepo->create([
+                        'chat_id'   => $sub->chat_id,
+                        'type'      => 'expense',
+                        'wallet_id' => $sub->wallet_id,
+                        'date'      => $today,
+                        'total'     => (int) $sub->amount,
+                        'category'  => $sub->category,
+                        'note'      => "Langganan: {$sub->name}",
+                    ]);
+                    $subRepo->markCharged((int) $sub->id, $month);
+                    $telegram->sendMessage(
+                        (string) $sub->chat_id,
+                        "💳 <b>Langganan otomatis dicatat:</b> {$sub->name}\n"
+                        . "Nominal: " . rp((int) $sub->amount)
+                    );
+                    $this->line("[subscriptions:run] Charged: {$sub->name} ({$sub->chat_id})");
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::error('SubscriptionsRun charge failed', ['sub_id' => $sub->id, 'error' => $e->getMessage()]);
+                }
             }
         }
     }

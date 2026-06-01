@@ -76,7 +76,7 @@ INTENT:
 - "catat": transaksi manual. "type": "expense"(default) / "income"(gajian/dapet/transfer masuk).
   Ekstrak: "amount"(angka penuh), "category"(WAJIB dari daftar), "note"(WAJIB, "Tidak terdeteksi" kalau kosong), "wallet"(nama dompet kalau disebut, else null).
 - "set_budget": "amount" + "period"(harian/mingguan/bulanan, def mingguan). Hanya kalau nyebut budget/anggaran.
-- "rekap": "period"(def mingguan).
+- "rekap": "period"(harian/mingguan/bulanan, def mingguan). Kalau user sebut jumlah hari ("7 hari terakhir","10 hari terakhir") isi "days"(integer) dan biarkan "period" null.
 - "sisa": "period"(def mingguan).
 - "saldo": cek saldo. "wallet"(nama spesifik atau null=semua).
 - "hapus": hapus transaksi terakhir.
@@ -96,7 +96,7 @@ Kategori "catat": "Makanan & Minuman","Belanja Harian","Transport","Tagihan","Ke
 Pesan user: "{$message}"
 
 FORMAT (semua field, yg nggak relevan null):
-{"intent":"...","type":null,"amount":null,"category":null,"note":null,"wallet":null,"period":null,"task":null,"remind_at":null,"repeat":null,"person":null,"day_of_month":null,"from_wallet":null,"to_wallet":null}
+{"intent":"...","type":null,"amount":null,"category":null,"note":null,"wallet":null,"period":null,"days":null,"task":null,"remind_at":null,"repeat":null,"person":null,"day_of_month":null,"from_wallet":null,"to_wallet":null}
 PROMPT;
 
         $payload = [

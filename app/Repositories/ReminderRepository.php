@@ -56,7 +56,7 @@ class ReminderRepository
         };
 
         DB::statement(
-            'UPDATE reminders SET remind_at = ?, notified = 0, updated_at = ? WHERE id = ?',
+            'UPDATE reminders SET remind_at = ?, notified = 0, notified_20 = 0, notified_10 = 0, notified_5 = 0, updated_at = ? WHERE id = ?',
             [$next->format('Y-m-d H:i:s'), now(), $reminder->id]
         );
     }

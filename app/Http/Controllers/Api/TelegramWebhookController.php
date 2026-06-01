@@ -251,8 +251,14 @@ class TelegramWebhookController extends Controller
 
     private function intentRekap(string $chatId, array $intent): void
     {
-        $period = $intent['period'] ?? 'mingguan';
-        $text   = $this->finance->buildRecap($chatId, $period);
+        $days = isset($intent['days']) ? (int) $intent['days'] : null;
+
+        if ($days && $days > 0) {
+            $text = $this->finance->buildRecapCustomDays($chatId, $days);
+        } else {
+            $text = $this->finance->buildRecap($chatId, $intent['period'] ?? 'mingguan');
+        }
+
         $this->telegram->sendMessage($chatId, $text);
     }
 
