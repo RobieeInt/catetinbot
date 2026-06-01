@@ -13,7 +13,7 @@ class DebtsRemind extends Command
 
     public function handle(TelegramService $telegram): void
     {
-        $tomorrow = now('Asia/Makassar')->addDay()->format('Y-m-d');
+        $tomorrow = now(config('app.timezone'))->addDay()->format('Y-m-d');
         $repo     = app(DebtRepository::class);
         $debts    = $repo->dueSoonAll($tomorrow);
 

@@ -380,12 +380,12 @@ class TelegramWebhookController extends Controller
             default   => '',
         };
 
-        $dt = \Carbon\Carbon::parse($remindAt)->setTimezone('Asia/Makassar');
+        $dt = \Carbon\Carbon::parse($remindAt)->setTimezone(config('app.timezone'));
         $this->telegram->sendMessage(
             $chatId,
             "⏰ <b>Pengingat diset!</b>\n"
             . "Tugas: {$task}\n"
-            . "Waktu: " . $dt->format('d M Y, H:i') . " WITA{$repeatStr}"
+            . "Waktu: " . $dt->format('d M Y, H:i') . "{$repeatStr}"
         );
     }
 
@@ -403,7 +403,7 @@ class TelegramWebhookController extends Controller
 
         $lines = ['📋 <b>Pengingat Aktif:</b>'];
         foreach ($reminders as $r) {
-            $dt       = \Carbon\Carbon::parse($r->remind_at)->setTimezone('Asia/Makassar');
+            $dt       = \Carbon\Carbon::parse($r->remind_at)->setTimezone(config('app.timezone'));
             $repeatStr = $r->repeat !== 'none' ? " ({$r->repeat})" : '';
             $lines[]  = "· {$r->task} — " . $dt->format('d M Y, H:i') . $repeatStr;
         }

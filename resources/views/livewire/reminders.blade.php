@@ -16,7 +16,7 @@
                 <div class="min-w-0">
                     <span class="font-semibold text-gray-800 text-sm block truncate">{{ $r->task }}</span>
                     <span class="text-xs text-gray-500 block mt-0.5">
-                        {{ \Carbon\Carbon::parse($r->remind_at)->setTimezone('Asia/Makassar')->format('d M Y, H:i') }}
+                        {{ \Carbon\Carbon::parse($r->remind_at)->setTimezone(config('app.timezone'))->format('d M Y, H:i') }}
                     </span>
                 </div>
                 @if($r->repeat !== 'none')
@@ -52,7 +52,7 @@
                 <tr class="hover:bg-gray-50">
                     <td class="px-4 py-3 font-medium text-gray-800">{{ $r->task }}</td>
                     <td class="px-4 py-3 text-gray-600">
-                        {{ \Carbon\Carbon::parse($r->remind_at)->setTimezone('Asia/Makassar')->format('d M Y, H:i') }}
+                        {{ \Carbon\Carbon::parse($r->remind_at)->setTimezone(config('app.timezone'))->format('d M Y, H:i') }}
                     </td>
                     <td class="px-4 py-3 text-center">
                         @if($r->repeat !== 'none')
@@ -86,7 +86,7 @@
         <div class="bg-white rounded-xl border border-gray-100 p-3 flex justify-between items-center">
             <div class="min-w-0">
                 <span class="text-sm text-gray-600 block truncate">{{ $r->task }}</span>
-                <span class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($r->remind_at)->setTimezone('Asia/Makassar')->format('d M Y, H:i') }}</span>
+                <span class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($r->remind_at)->setTimezone(config('app.timezone'))->format('d M Y, H:i') }}</span>
             </div>
             <button wire:click="deleteReminder({{ $r->id }})" class="text-xs text-red-400 ml-3 shrink-0">Hapus</button>
         </div>
@@ -100,7 +100,7 @@
                 @foreach($pastList as $r)
                 <tr>
                     <td class="px-4 py-2.5 text-gray-500">{{ $r->task }}</td>
-                    <td class="px-4 py-2.5 text-gray-400">{{ \Carbon\Carbon::parse($r->remind_at)->setTimezone('Asia/Makassar')->format('d M Y, H:i') }}</td>
+                    <td class="px-4 py-2.5 text-gray-400">{{ \Carbon\Carbon::parse($r->remind_at)->setTimezone(config('app.timezone'))->format('d M Y, H:i') }}</td>
                     <td class="px-4 py-2.5 text-center">
                         <button wire:click="deleteReminder({{ $r->id }})" class="text-xs text-red-400 hover:text-red-600">Hapus</button>
                     </td>

@@ -48,7 +48,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <div class="text-sm font-medium text-gray-800">{{ $t->from_wallet_name }} → {{ $t->to_wallet_name }}</div>
-                    <div class="text-xs text-gray-400 mt-0.5">{{ \Carbon\Carbon::parse($t->transfer_date)->setTimezone('Asia/Makassar')->format('d M Y, H:i') }}</div>
+                    <div class="text-xs text-gray-400 mt-0.5">{{ \Carbon\Carbon::parse($t->transfer_date)->setTimezone(config('app.timezone'))->format('d M Y, H:i') }}</div>
                     @if($t->note)<div class="text-xs text-gray-500 mt-0.5">{{ $t->note }}</div>@endif
                 </div>
                 <div class="text-base font-bold text-blue-600">{{ rp((int)$t->amount) }}</div>
@@ -74,7 +74,7 @@
             <tbody class="divide-y divide-gray-50">
                 @forelse($transfers as $t)
                 <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">{{ \Carbon\Carbon::parse($t->transfer_date)->setTimezone('Asia/Makassar')->format('d M Y H:i') }}</td>
+                    <td class="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">{{ \Carbon\Carbon::parse($t->transfer_date)->setTimezone(config('app.timezone'))->format('d M Y H:i') }}</td>
                     <td class="px-4 py-3 text-gray-700">{{ $t->from_wallet_name }}</td>
                     <td class="px-4 py-3 text-gray-700">{{ $t->to_wallet_name }}</td>
                     <td class="px-4 py-3 text-right font-semibold text-blue-600">{{ rp((int)$t->amount) }}</td>

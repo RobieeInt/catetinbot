@@ -15,7 +15,7 @@ class RemindersDispatch extends Command
     public function handle(TelegramService $telegram, ActivityLogRepository $activityLog): void
     {
         $leadMinutes = (int) env('REMINDER_LEAD_MINUTES', 20);
-        $threshold   = now('Asia/Makassar')->addMinutes($leadMinutes)->format('Y-m-d H:i:s');
+        $threshold   = now(config('app.timezone'))->addMinutes($leadMinutes)->format('Y-m-d H:i:s');
 
         $repo      = new ReminderRepository($activityLog);
         $reminders = $repo->due($threshold);

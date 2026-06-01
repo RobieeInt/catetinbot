@@ -16,7 +16,7 @@ class SubscriptionsRun extends Command
     public function handle(TelegramService $telegram, ActivityLogRepository $activityLog): void
     {
         $today  = today_wita();
-        $month  = now('Asia/Makassar')->format('Y-m');
+        $month  = now(config('app.timezone'))->format('Y-m');
 
         $subRepo = new SubscriptionRepository($activityLog);
         $txRepo  = new TransactionRepository($activityLog);
@@ -49,7 +49,7 @@ class SubscriptionsRun extends Command
         }
 
         // Reminder sebelum jatuh tempo
-        $todayDay    = (int) now('Asia/Makassar')->format('j');
+        $todayDay    = (int) now(config('app.timezone'))->format('j');
         $remindToday = $subRepo->dueReminderSimple($todayDay);
 
         foreach ($remindToday as $sub) {

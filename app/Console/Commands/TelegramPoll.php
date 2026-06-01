@@ -51,7 +51,7 @@ class TelegramPoll extends Command
 
                     $chatId = $update['message']['chat']['id'] ?? 'unknown';
                     $text   = $update['message']['text'] ?? '[media]';
-                    $this->line("[" . now('Asia/Makassar')->format('H:i:s') . "] #{$updateId} chat:{$chatId} → {$text}");
+                    $this->line("[" . now(config('app.timezone'))->format('H:i:s') . "] #{$updateId} chat:{$chatId} → {$text}");
 
                     $controller = $this->makeController();
                     $controller->process($update);

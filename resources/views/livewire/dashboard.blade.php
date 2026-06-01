@@ -102,7 +102,7 @@
             <div class="py-2 border-b border-gray-50 last:border-0">
                 <div class="text-sm font-medium text-gray-800 truncate">{{ $r->task }}</div>
                 <div class="text-xs text-gray-400 mt-0.5">
-                    {{ \Carbon\Carbon::parse($r->remind_at)->setTimezone('Asia/Makassar')->format('d M, H:i') }}
+                    {{ \Carbon\Carbon::parse($r->remind_at)->setTimezone(config('app.timezone'))->format('d M, H:i') }}
                     @if($r->repeat!=='none')<span class="text-blue-400 ml-1">· {{ $r->repeat }}</span>@endif
                 </div>
             </div>

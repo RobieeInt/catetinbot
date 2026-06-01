@@ -175,7 +175,7 @@ class FinanceService
 
     private function prevPeriodRange(string $period): array
     {
-        $now = Carbon::now('Asia/Makassar');
+        $now = Carbon::now(config('app.timezone'));
         return match ($period) {
             'harian'  => [
                 'start' => $now->copy()->subDay()->format('Y-m-d'),

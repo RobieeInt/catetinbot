@@ -70,7 +70,7 @@ PROMPT;
     {
         $prompt = <<<PROMPT
 Kamu mesin klasifikasi maksud untuk bot keuangan + pengingat. Balas HANYA JSON.
-Waktu sekarang: {$now} (WITA)
+Waktu sekarang: {$now}
 
 INTENT:
 - "catat": transaksi manual. "type": "expense"(default) / "income"(gajian/dapet/transfer masuk).
