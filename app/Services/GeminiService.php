@@ -74,7 +74,7 @@ Waktu sekarang: {$now}
 
 INTENT:
 - "catat": transaksi manual. "type": "expense"(default) / "income"(gajian/dapet/transfer masuk).
-  Ekstrak: "amount"(angka penuh), "category"(WAJIB dari daftar), "note"(WAJIB, "Tidak terdeteksi" kalau kosong), "wallet"(nama dompet kalau disebut, else null).
+  Ekstrak: "amount"(angka penuh dalam mata uang asli), "currency"(kode ISO: "IDR" default, "USD","SGD","MYR",dst — deteksi dari teks), "category"(WAJIB dari daftar), "note"(WAJIB, "Tidak terdeteksi" kalau kosong), "wallet"(nama dompet kalau disebut, else null).
 - "set_budget": "amount" + "period"(harian/mingguan/bulanan, def mingguan). Hanya kalau nyebut budget/anggaran.
 - "rekap": "period"(harian/mingguan/bulanan, def mingguan). Kalau user sebut jumlah hari ("7 hari terakhir","10 hari terakhir") isi "days"(integer) dan biarkan "period" null.
 - "sisa": "period"(def mingguan).
@@ -85,7 +85,7 @@ INTENT:
 - "reminder": "task" + "remind_at"("YYYY-MM-DD HH:MM:SS" dari waktu sekarang; jam lewat -> besok) + "repeat"(none/daily/weekly/monthly, def none).
 - "reminder_list": lihat pengingat aktif.
 - "transfer": pindah uang antar dompet. "amount","from_wallet","to_wallet". TIDAK masuk expense/income.
-- "langganan": tambah langganan. "note"(nama), "amount", "category", "day_of_month"(1-31).
+- "langganan": tambah langganan recurring. Gunakan ini jika pesan mengandung kata "subscription","SUBSCRIPTI","berlangganan","langganan" ATAU merchant/nama layanan digital (Netflix,Spotify,Claude,ChatGPT,Adobe,dll). Ekstrak: "note"(nama layanan), "amount"(angka asli), "currency"(ISO, def IDR), "category"("Tagihan"), "day_of_month"(tanggal tagih dari teks, misal "tgl 14-05-2026" → 14; kalau tidak ada → hari ini).
 - "utang": "type"("utang"=aku ngutang/"piutang"=orang ngutang ke aku), "person", "amount", "remind_at"(due date jika ada, format YYYY-MM-DD HH:MM:SS), "note".
 - "lunas": lunasi. "type"+"person".
 - "nabung": tambah setoran ke goal. "note"(nama goal), "amount".
@@ -96,7 +96,7 @@ Kategori "catat": "Makanan & Minuman","Belanja Harian","Transport","Tagihan","Ke
 Pesan user: "{$message}"
 
 FORMAT (semua field, yg nggak relevan null):
-{"intent":"...","type":null,"amount":null,"category":null,"note":null,"wallet":null,"period":null,"days":null,"task":null,"remind_at":null,"repeat":null,"person":null,"day_of_month":null,"from_wallet":null,"to_wallet":null}
+{"intent":"...","type":null,"amount":null,"currency":"IDR","category":null,"note":null,"wallet":null,"period":null,"days":null,"task":null,"remind_at":null,"repeat":null,"person":null,"day_of_month":null,"from_wallet":null,"to_wallet":null}
 PROMPT;
 
         $payload = [

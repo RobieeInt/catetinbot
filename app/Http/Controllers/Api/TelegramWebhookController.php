@@ -108,6 +108,31 @@ class TelegramWebhookController extends Controller
     public function handleText(string $chatId, string $text): void
     {
         // Cek pending confirmation (struk confidence < 0.60)
+        // Cek pending konfirmasi duplikat langganan
+        $pendingSubKey = "pending_sub_confirm:{$chatId}";
+        if (Cache::has($pendingSubKey)) {
+            $upper   = strtoupper(trim($text));
+            $pending = Cache::get($pendingSubKey);
+            Cache::forget($pendingSubKey);
+            if (in_array($upper, ['BARU', 'YA', 'IYA', 'YES', 'OK', 'OKE', 'TAMBAH'])) {
+                $this->confirmNewSubscription($chatId, $pending, forceNew: true);
+            } else {
+                // Cukup catat transaksi, tidak buat subscription baru
+                $this->txRepo->create([
+                    'chat_id'   => $chatId,
+                    'type'      => 'expense',
+                    'wallet_id' => $pending['wallet_id'],
+                    'date'      => today_wita(),
+                    'total'     => $pending['amount'],
+                    'category'  => $pending['category'],
+                    'note'      => "Langganan: {$pending['name']}",
+                ]);
+                $this->telegram->sendMessage($chatId, "✅ Transaksi dicatat tanpa menambah langganan baru.\nNominal: " . rp($pending['amount']));
+            }
+            return;
+        }
+
+        // Cek pending confirmation (struk confidence < 0.60)
         $pendingKey = "pending_confirm:{$chatId}";
         if (Cache::has($pendingKey)) {
             $upper = strtoupper(trim($text));
@@ -120,7 +145,6 @@ class TelegramWebhookController extends Controller
                 $this->telegram->sendMessage($chatId, '❌ Dibatalkan.');
                 return;
             }
-            // Bukan ya/tidak — teruskan proses normal tapi hapus pending
             Cache::forget($pendingKey);
         }
 
@@ -181,6 +205,22 @@ class TelegramWebhookController extends Controller
         $type     = $intent['type'] ?? 'expense';
         $category = $intent['category'] ?? 'Lainnya';
         $note     = $intent['note'] ?? 'Tidak terdeteksi';
+        $currency = strtoupper($intent['currency'] ?? 'IDR');
+
+        // Konversi mata uang asing ke IDR
+        $originalAmount = (float) $amount;
+        $convertedNote  = '';
+        if ($currency !== 'IDR') {
+            $rate = $this->fetchExchangeRate($currency);
+            if ($rate) {
+                $amountIdr     = (int) round($originalAmount * $rate);
+                $convertedNote = " (dari {$currency} " . number_format($originalAmount, 2) . " × " . number_format($rate, 0, ',', '.') . ")";
+                $amount        = $amountIdr;
+            } else {
+                $this->telegram->sendMessage($chatId, "⚠️ Gagal ambil kurs {$currency}/IDR. Coba lagi atau input nominal IDR langsung.");
+                return;
+            }
+        }
 
         // Resolve wallet
         $walletId   = null;
@@ -196,7 +236,7 @@ class TelegramWebhookController extends Controller
             $walletName = $wallet->name;
         }
 
-        $tx = $this->txRepo->create([
+        $this->txRepo->create([
             'chat_id'   => $chatId,
             'type'      => $type,
             'wallet_id' => $walletId,
@@ -209,7 +249,7 @@ class TelegramWebhookController extends Controller
         $icon    = $type === 'income' ? '💰' : '💸';
         $typeStr = $type === 'income' ? 'Pemasukan' : 'Pengeluaran';
         $reply   = "{$icon} <b>{$typeStr} dicatat!</b>\n"
-            . "Nominal: " . rp((int) $amount) . "\n"
+            . "Nominal: " . rp((int) $amount) . $convertedNote . "\n"
             . "Kategori: {$category}\n"
             . "Catatan: {$note}";
 
@@ -218,7 +258,6 @@ class TelegramWebhookController extends Controller
             $reply .= "\n💼 Saldo {$walletName}: " . rp($saldo);
         }
 
-        // Tampilkan status budget jika expense
         if ($type === 'expense') {
             $budgetStatus = $this->finance->buildBudgetStatus($chatId);
             if ($budgetStatus) {
@@ -227,6 +266,19 @@ class TelegramWebhookController extends Controller
         }
 
         $this->telegram->sendMessage($chatId, $reply);
+    }
+
+    private function fetchExchangeRate(string $currency): ?float
+    {
+        try {
+            $url      = "https://api.frankfurter.app/latest?from={$currency}&to=IDR";
+            $response = file_get_contents($url);
+            if (!$response) return null;
+            $data = json_decode($response, true);
+            return $data['rates']['IDR'] ?? null;
+        } catch (\Throwable) {
+            return null;
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -482,29 +534,97 @@ class TelegramWebhookController extends Controller
         }
 
         $name       = $intent['note'] ?? null;
-        $dayOfMonth = (int) ($intent['day_of_month'] ?? 0);
+        $dayOfMonth = (int) ($intent['day_of_month'] ?? now(config('app.timezone'))->day);
+        $currency   = strtoupper($intent['currency'] ?? 'IDR');
 
         if (!$name || $dayOfMonth < 1 || $dayOfMonth > 31) {
             $this->telegram->sendMessage($chatId, '❌ Format kurang lengkap. Contoh: "langganan netflix 54rb tiap tanggal 5"');
             return;
         }
 
-        $category = $intent['category'] ?? 'Lainnya';
+        // Konversi mata uang asing ke IDR
+        $originalAmount = (float) $amount;
+        $convertedNote  = '';
+        if ($currency !== 'IDR') {
+            $rate = $this->fetchExchangeRate($currency);
+            if ($rate) {
+                $amount        = (int) round($originalAmount * $rate);
+                $convertedNote = "\n💱 Kurs: {$currency} " . number_format($originalAmount, 2) . " × " . number_format($rate, 0, ',', '.') . " = " . rp($amount);
+            } else {
+                $this->telegram->sendMessage($chatId, "⚠️ Gagal ambil kurs {$currency}/IDR. Coba lagi atau input nominal IDR langsung.");
+                return;
+            }
+        }
+
+        $category = $intent['category'] ?? 'Tagihan';
         $walletId = null;
         if (!empty($intent['wallet'])) {
             $wallet   = $this->walletRepo->findByName($chatId, $intent['wallet']);
             $walletId = $wallet?->id;
         }
 
-        $this->subRepo->create($chatId, $name, (int) $amount, $category, $walletId, $dayOfMonth);
+        $pending = [
+            'name'       => $name,
+            'amount'     => (int) $amount,
+            'category'   => $category,
+            'wallet_id'  => $walletId,
+            'day'        => $dayOfMonth,
+            'converted'  => $convertedNote,
+        ];
 
-        $this->telegram->sendMessage(
-            $chatId,
-            "📅 <b>Langganan ditambahkan!</b>\n"
-            . "Nama: {$name}\n"
-            . "Nominal: " . rp((int) $amount) . "\n"
-            . "Tagih tiap tgl: {$dayOfMonth}"
+        // Cek apakah langganan sudah ada
+        $existing = \Illuminate\Support\Facades\DB::selectOne(
+            'SELECT id, amount FROM subscriptions WHERE chat_id = ? AND LOWER(name) = LOWER(?) AND active = 1',
+            [$chatId, $name]
         );
+
+        if ($existing) {
+            // Tanya user mau buat baru atau cukup catat transaksi
+            Cache::put("pending_sub_confirm:{$chatId}", $pending, now()->addMinutes(5));
+            $this->telegram->sendMessage(
+                $chatId,
+                "⚠️ <b>Langganan \"{$name}\" sudah ada</b> (Rp" . number_format((int)$existing->amount, 0, ',', '.') . "/bln).\n\n"
+                . "Transaksi bulan ini tetap akan dicatat.\n\n"
+                . "Mau <b>tambah sebagai langganan baru</b> juga? (ketik <b>baru</b> / <b>tidak</b>)"
+            );
+            return;
+        }
+
+        $this->confirmNewSubscription($chatId, $pending, forceNew: true);
+    }
+
+    private function confirmNewSubscription(string $chatId, array $pending, bool $forceNew): void
+    {
+        $currentMonth = now(config('app.timezone'))->format('Y-m');
+
+        if ($forceNew) {
+            $subId = $this->subRepo->create(
+                $chatId, $pending['name'], $pending['amount'],
+                $pending['category'], $pending['wallet_id'], $pending['day']
+            );
+            \Illuminate\Support\Facades\DB::statement(
+                'UPDATE subscriptions SET last_charged_month = ? WHERE id = ?',
+                [$currentMonth, $subId]
+            );
+        }
+
+        $this->txRepo->create([
+            'chat_id'   => $chatId,
+            'type'      => 'expense',
+            'wallet_id' => $pending['wallet_id'],
+            'date'      => today_wita(),
+            'total'     => $pending['amount'],
+            'category'  => $pending['category'],
+            'note'      => "Langganan: {$pending['name']}",
+        ]);
+
+        $reply = "📅 <b>Langganan dicatat!</b>\n"
+            . "Nama: {$pending['name']}\n"
+            . "Nominal: " . rp($pending['amount']) . $pending['converted'] . "\n"
+            . "Tagih tiap tgl: {$pending['day']}\n"
+            . "<i>✅ Langganan baru ditambahkan — bulan depan auto-catat tiap tgl {$pending['day']}.</i>";
+
+        $this->telegram->sendMessage($chatId, $reply);
     }
 
     // -------------------------------------------------------------------------
