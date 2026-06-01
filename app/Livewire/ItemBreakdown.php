@@ -54,7 +54,7 @@ class ItemBreakdown extends Component
 
     private function chatId(): string
     {
-        return (string) env('OWNER_CHAT_ID', '');
+        return (string) config('services.telegram.owner_chat_id');
     }
 
 }

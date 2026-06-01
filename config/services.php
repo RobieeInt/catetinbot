@@ -36,8 +36,9 @@ return [
     ],
 
     'telegram' => [
-        'token'  => env('TELEGRAM_BOT_TOKEN'),
-        'secret' => env('TELEGRAM_WEBHOOK_SECRET'),
+        'token'          => env('TELEGRAM_BOT_TOKEN'),
+        'secret'         => env('TELEGRAM_WEBHOOK_SECRET'),
+        'owner_chat_id'  => env('OWNER_CHAT_ID', ''),
     ],
 
     'gemini' => [
