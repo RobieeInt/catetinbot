@@ -54,8 +54,16 @@
             padding: 24px;
             position: relative;
             overflow: hidden;
+            display: block;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
             transition: transform 0.3s cubic-bezier(.22,.68,0,1.2), border-color 0.3s ease, box-shadow 0.3s ease;
             backdrop-filter: blur(10px);
+        }
+        .project-card:focus-visible {
+            outline: 2px solid rgba(96,165,250,0.7);
+            outline-offset: 4px;
         }
         .project-card::before {
             content: '';
@@ -77,6 +85,172 @@
         .card-glow-cyan:hover   { box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(6,182,212,0.3),  0 0 30px rgba(6,182,212,0.08); }
         .card-glow-rose:hover   { box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(244,63,94,0.3),  0 0 30px rgba(244,63,94,0.08); }
         .card-glow-sky:hover    { box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(56,189,248,0.3), 0 0 30px rgba(56,189,248,0.08); }
+
+        .project-shot {
+            aspect-ratio: 16 / 9;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            margin: -8px -8px 20px;
+            position: relative;
+        }
+        .project-shot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.45s ease, filter 0.45s ease;
+        }
+        .project-card:hover .project-shot img { transform: scale(1.04); filter: saturate(1.08); }
+        .project-shot::after {
+            content: 'Preview gallery';
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            color: #e5e7eb;
+            background: rgba(0,0,0,0.55);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 999px;
+            padding: 5px 10px;
+            font-size: 11px;
+            backdrop-filter: blur(8px);
+        }
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #d1d5db;
+            border: 1px solid rgba(255,255,255,0.09);
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            padding: 7px 10px;
+            font-size: 12px;
+            transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+        .project-link:hover {
+            color: white;
+            border-color: rgba(96,165,250,0.45);
+            background: rgba(96,165,250,0.1);
+        }
+
+        /* ---- PROJECT MODAL ---- */
+        .project-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 80;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .project-modal.open { display: flex; }
+        .project-modal__backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.78);
+            backdrop-filter: blur(14px);
+        }
+        .project-modal__panel {
+            position: relative;
+            z-index: 1;
+            width: min(1120px, 100%);
+            max-height: min(88vh, 860px);
+            background: rgba(10,10,12,0.96);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px;
+            box-shadow: 0 30px 90px rgba(0,0,0,0.65);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+        }
+        .project-modal__media {
+            min-height: 0;
+            background: #050506;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-modal__stage {
+            position: relative;
+            min-height: 360px;
+            height: 62vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .project-modal__stage img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        .project-modal__nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background: rgba(0,0,0,0.48);
+            border: 1px solid rgba(255,255,255,0.16);
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+        .project-modal__nav:hover { background: rgba(0,0,0,0.7); border-color: rgba(255,255,255,0.3); }
+        .project-modal__nav.prev { left: 16px; }
+        .project-modal__nav.next { right: 16px; }
+        .project-modal__thumbs {
+            display: flex;
+            gap: 10px;
+            padding: 14px;
+            overflow-x: auto;
+        }
+        .project-modal__thumb {
+            width: 96px;
+            aspect-ratio: 16 / 9;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.12);
+            opacity: 0.55;
+            flex: 0 0 auto;
+            background: rgba(255,255,255,0.05);
+        }
+        .project-modal__thumb.active {
+            opacity: 1;
+            border-color: rgba(96,165,250,0.85);
+            box-shadow: 0 0 0 2px rgba(96,165,250,0.18);
+        }
+        .project-modal__thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .project-modal__side {
+            padding: 24px;
+            overflow-y: auto;
+            border-left: 1px solid rgba(255,255,255,0.08);
+        }
+        .project-modal__close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            z-index: 2;
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        body.modal-open { overflow: hidden; }
 
         /* ---- SCROLL REVEAL ---- */
         .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -141,6 +315,20 @@
         }
         @media (max-width: 767px) {
             .projects-grid .project-card { margin-bottom: 16px; }
+            .project-modal { padding: 10px; }
+            .project-modal__panel {
+                grid-template-columns: 1fr;
+                max-height: 92vh;
+            }
+            .project-modal__stage {
+                min-height: 240px;
+                height: 42vh;
+            }
+            .project-modal__side {
+                border-left: 0;
+                border-top: 1px solid rgba(255,255,255,0.08);
+                padding: 18px;
+            }
         }
     </style>
 </head>
@@ -265,6 +453,175 @@
         {{-- ================================================================ --}}
         {{-- PROJECTS --}}
         {{-- ================================================================ --}}
+        @php
+            $projectImages = function (string $slug) {
+                $files = glob(public_path("project/{$slug}/*.{png,jpg,jpeg,webp}"), GLOB_BRACE) ?: [];
+                natsort($files);
+
+                return array_map(
+                    fn ($path) => asset('project/'.$slug.'/'.basename($path)),
+                    array_values($files)
+                );
+            };
+
+            $projects = [
+                [
+                    'slug' => 'reconext',
+                    'title' => 'Reconext',
+                    'category' => 'Digital Agency',
+                    'status' => 'Active',
+                    'statusClass' => 'text-green-400 bg-green-500/10 border-green-500/20',
+                    'dot' => 'dot-active',
+                    'glow' => 'card-glow-blue',
+                    'accent' => 'text-blue-500',
+                    'pill' => 'text-blue-400 bg-blue-500/10 border-blue-500/20',
+                    'link' => 'https://reconext.id/',
+                    'description' => 'Digital agency untuk website, landing page, sistem bisnis custom, automasi workflow, dan integrasi AI untuk UMKM maupun perusahaan.',
+                    'features' => ['Company Profile', 'Service Landing Page', 'Lead Capture', 'Automation Offering', 'AI Integration'],
+                    'stack' => ['Laravel', 'Blade', 'Tailwind CSS', 'JavaScript', 'WhatsApp CTA'],
+                ],
+                [
+                    'slug' => 'jenzaudio',
+                    'title' => 'Jenz Audio',
+                    'category' => 'Business Website',
+                    'status' => 'Active',
+                    'statusClass' => 'text-green-400 bg-green-500/10 border-green-500/20',
+                    'dot' => 'dot-active',
+                    'glow' => 'card-glow-green',
+                    'accent' => 'text-green-500',
+                    'pill' => 'text-green-400 bg-green-500/10 border-green-500/20',
+                    'link' => 'https://jenzaudiogs.com/',
+                    'description' => 'Website bisnis untuk branding, product showcase, dan katalog digital Jenz Audio dengan tampilan visual yang fokus ke konversi.',
+                    'features' => ['Product Showcase', 'Digital Catalog', 'Landing Page', 'Responsive UI', 'Marketing Optimization'],
+                    'stack' => ['Laravel', 'Blade', 'Tailwind CSS', 'JavaScript', 'SEO Basics'],
+                ],
+                [
+                    'slug' => 'morizono',
+                    'title' => 'Morizono',
+                    'category' => 'Property Website',
+                    'status' => 'Active',
+                    'statusClass' => 'text-green-400 bg-green-500/10 border-green-500/20',
+                    'dot' => 'dot-active',
+                    'glow' => 'card-glow-cyan',
+                    'accent' => 'text-cyan-500',
+                    'pill' => 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20',
+                    'link' => 'https://morizono.co.id/',
+                    'description' => 'Website properti premium untuk Morizono Japanese Living, lengkap dengan unit types, facilities, development progress, updates, dan lead form.',
+                    'features' => ['Unit Types', 'Facilities Showcase', 'News & Updates', 'Contact Form', 'WhatsApp Lead'],
+                    'stack' => ['Laravel', 'Blade', 'Tailwind CSS', 'JavaScript', 'Content Pages'],
+                ],
+                [
+                    'slug' => 'eventicketing',
+                    'title' => 'Event Ticketing System',
+                    'category' => 'Event Management',
+                    'status' => 'Active',
+                    'statusClass' => 'text-green-400 bg-green-500/10 border-green-500/20',
+                    'dot' => 'dot-active',
+                    'glow' => 'card-glow-violet',
+                    'accent' => 'text-violet-500',
+                    'pill' => 'text-violet-400 bg-violet-500/10 border-violet-500/20',
+                    'link' => null,
+                    'description' => 'Platform manajemen event dan ticketing untuk registrasi, monitoring peserta, pengelolaan tiket, serta reporting operasional.',
+                    'features' => ['Event Management', 'Ticket Registration', 'Participant Dashboard', 'Check-in Flow', 'Reporting'],
+                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'QR Workflow', 'Admin Dashboard'],
+                ],
+                [
+                    'slug' => 'restaurantpos',
+                    'title' => 'Restaurant POS System',
+                    'category' => 'Restaurant POS',
+                    'status' => 'Active',
+                    'statusClass' => 'text-green-400 bg-green-500/10 border-green-500/20',
+                    'dot' => 'dot-active',
+                    'glow' => 'card-glow-rose',
+                    'accent' => 'text-rose-500',
+                    'pill' => 'text-rose-400 bg-rose-500/10 border-rose-500/20',
+                    'link' => null,
+                    'description' => 'Sistem POS restoran untuk operasional kasir, pemesanan, menu, meja, pembayaran, hingga laporan penjualan.',
+                    'features' => ['Order Management', 'Cashier System', 'Menu Management', 'Sales Report', 'Operational Dashboard'],
+                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'Tailwind CSS', 'Role Access'],
+                ],
+                [
+                    'slug' => 'rsms',
+                    'title' => 'RSMS',
+                    'category' => 'Business System',
+                    'status' => 'Active',
+                    'statusClass' => 'text-green-400 bg-green-500/10 border-green-500/20',
+                    'dot' => 'dot-active',
+                    'glow' => 'card-glow-sky',
+                    'accent' => 'text-sky-500',
+                    'pill' => 'text-sky-400 bg-sky-500/10 border-sky-500/20',
+                    'link' => null,
+                    'description' => 'Sistem dashboard operasional untuk pengelolaan data bisnis, monitoring workflow, dan reporting internal.',
+                    'features' => ['Dashboard', 'Data Management', 'Reporting', 'Workflow Monitoring', 'Admin Tools'],
+                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'Tailwind CSS', 'Charts'],
+                ],
+                [
+                    'slug' => 'hris',
+                    'title' => 'HRIS',
+                    'category' => 'HR Management',
+                    'status' => 'Active',
+                    'statusClass' => 'text-green-400 bg-green-500/10 border-green-500/20',
+                    'dot' => 'dot-active',
+                    'glow' => 'card-glow-amber',
+                    'accent' => 'text-amber-500',
+                    'pill' => 'text-amber-400 bg-amber-500/10 border-amber-500/20',
+                    'link' => null,
+                    'description' => 'Human resource information system untuk membantu pengelolaan data karyawan, attendance, request, dan dashboard HR.',
+                    'features' => ['Employee Data', 'Attendance', 'Leave Request', 'HR Dashboard', 'Role Access'],
+                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'Tailwind CSS', 'Admin Panel'],
+                ],
+                [
+                    'slug' => 'garudaclub',
+                    'title' => 'Garuda Club',
+                    'category' => 'Membership Platform',
+                    'status' => 'Active',
+                    'statusClass' => 'text-green-400 bg-green-500/10 border-green-500/20',
+                    'dot' => 'dot-active',
+                    'glow' => 'card-glow-violet',
+                    'accent' => 'text-violet-500',
+                    'pill' => 'text-violet-400 bg-violet-500/10 border-violet-500/20',
+                    'link' => null,
+                    'description' => 'Platform membership dan dashboard komunitas dengan modul data member, benefit, dan pengelolaan aktivitas.',
+                    'features' => ['Member Management', 'Dashboard', 'Activity Data', 'Benefit Tracking', 'Admin Tools'],
+                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'Tailwind CSS', 'Dashboard UI'],
+                ],
+                [
+                    'slug' => null,
+                    'title' => 'SuperSave',
+                    'category' => 'Energy Product Website',
+                    'status' => 'Active',
+                    'statusClass' => 'text-green-400 bg-green-500/10 border-green-500/20',
+                    'dot' => 'dot-active',
+                    'glow' => 'card-glow-sky',
+                    'accent' => 'text-sky-500',
+                    'pill' => 'text-sky-400 bg-sky-500/10 border-sky-500/20',
+                    'link' => 'https://supersave.id/',
+                    'description' => 'Website company/product untuk solusi energi, katalog produk, insight artikel, testimoni, dan konsultasi via WhatsApp.',
+                    'features' => ['Product Catalog', 'Blog & News', 'Testimonials', 'WhatsApp Consultation', 'Responsive Landing'],
+                    'stack' => ['Laravel', 'Blade', 'Tailwind CSS', 'JavaScript', 'Content Management'],
+                ],
+                [
+                    'slug' => null,
+                    'title' => 'Catetin',
+                    'category' => 'AI Personal Finance',
+                    'status' => 'Building',
+                    'statusClass' => 'text-amber-400 bg-amber-500/10 border-amber-500/20',
+                    'dot' => 'dot-building',
+                    'glow' => 'card-glow-amber',
+                    'accent' => 'text-amber-500',
+                    'pill' => 'text-amber-400 bg-amber-500/10 border-amber-500/20',
+                    'link' => null,
+                    'description' => 'Aplikasi pencatat keuangan berbasis Telegram Bot dan Dashboard Web yang memahami teks, voice note, dan foto struk menggunakan AI.',
+                    'features' => ['OCR Receipt', 'Voice Note Processing', 'Budget Tracking', 'Savings Goal', 'Auto Recap'],
+                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'Telegram Bot', 'Gemini AI'],
+                ],
+            ];
+
+            $projects = array_map(function ($project) use ($projectImages) {
+                $project['images'] = $project['slug'] ? $projectImages($project['slug']) : [];
+                return $project;
+            }, $projects);
+        @endphp
         <section id="projects" class="py-24 px-4 sm:px-6 border-t border-white/5">
             <div class="max-w-6xl mx-auto">
                 <div class="mb-5 reveal">
@@ -276,178 +633,67 @@
                 </div>
 
                 <div class="projects-grid mt-12">
-
-                    {{-- PROJECT 1: Reconext --}}
-                    <div class="project-card card-glow-blue reveal">
-                        <div class="flex items-start justify-between mb-4">
-                            <div>
-                                <p class="text-xs text-gray-600 uppercase tracking-wider mb-1">Digital Agency</p>
-                                <h3 class="text-xl font-bold text-white">Reconext</h3>
-                            </div>
-                            <span class="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 border border-green-500/20 px-2.5 py-1 rounded-full shrink-0 ml-2">
-                                <span class="dot dot-active"></span> Active
-                            </span>
+                    @foreach($projects as $index => $project)
+                    <article
+                        class="project-card {{ $project['glow'] }} reveal"
+                        style="transition-delay:{{ ($index % 9) * 0.04 }}s"
+                        role="{{ count($project['images']) ? 'button' : 'article' }}"
+                        tabindex="{{ count($project['images']) ? '0' : '-1' }}"
+                        data-project-index="{{ $index }}"
+                    >
+                        @if(count($project['images']))
+                        <div class="project-shot">
+                            <img src="{{ $project['images'][0] }}" alt="Screenshot {{ $project['title'] }}" loading="lazy">
                         </div>
-                        <p class="text-sm text-gray-400 leading-relaxed mb-5">
-                            Digital agency yang berfokus pada pembuatan website, landing page, sistem bisnis custom, automasi, dan integrasi AI untuk UMKM maupun perusahaan.
-                        </p>
-                        <div class="flex flex-wrap gap-1.5">
-                            @foreach(['Laravel','Livewire','MySQL','Tailwind CSS','JavaScript'] as $t)
-                            <span class="tech-pill text-blue-400 bg-blue-500/10 border-blue-500/20">{{ $t }}</span>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    {{-- PROJECT 2: Catetin --}}
-                    <div class="project-card card-glow-amber reveal" style="transition-delay:0.05s;border-color:rgba(245,158,11,0.15)">
+                        @else
                         <div class="absolute top-0 right-0 w-32 h-32 rounded-full opacity-10"
-                             style="background:radial-gradient(circle, #f59e0b, transparent);transform:translate(30%,-30%)"></div>
+                             style="background:radial-gradient(circle, currentColor, transparent);transform:translate(30%,-30%)"></div>
+                        @endif
+
                         <div class="flex items-start justify-between mb-4">
                             <div>
-                                <p class="text-xs text-gray-600 uppercase tracking-wider mb-1">AI Personal Finance</p>
-                                <h3 class="text-xl font-bold text-white">Catetin</h3>
+                                <p class="text-xs text-gray-600 uppercase tracking-wider mb-1">{{ $project['category'] }}</p>
+                                <h3 class="text-xl font-bold text-white">{{ $project['title'] }}</h3>
                             </div>
-                            <span class="flex items-center gap-1.5 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full shrink-0 ml-2">
-                                <span class="dot dot-building"></span> Building
+                            <span class="flex items-center gap-1.5 text-xs {{ $project['statusClass'] }} border px-2.5 py-1 rounded-full shrink-0 ml-2">
+                                <span class="dot {{ $project['dot'] }}"></span> {{ $project['status'] }}
                             </span>
                         </div>
-                        <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                            Aplikasi pencatat keuangan berbasis Telegram Bot dan Dashboard Web yang mampu memahami teks, voice note, dan foto struk menggunakan AI.
-                        </p>
+
+                        <p class="text-sm text-gray-400 leading-relaxed mb-4">{{ $project['description'] }}</p>
+
                         <ul class="space-y-1 mb-5">
-                            @foreach(['OCR Receipt','Voice Note Processing','Budget Tracking','Savings Goal','Debt Tracker','Auto Recap','Wallet Management'] as $f)
+                            @foreach($project['features'] as $feature)
                             <li class="flex items-center gap-2 text-xs text-gray-500">
-                                <span class="text-amber-500">▸</span> {{ $f }}
+                                <span class="{{ $project['accent'] }}">▸</span> {{ $feature }}
                             </li>
                             @endforeach
                         </ul>
+
                         <div class="flex flex-wrap gap-1.5 pt-4 border-t border-white/5">
-                            @foreach(['Laravel','Livewire','MySQL','Telegram Bot','Gemini AI'] as $t)
-                            <span class="tech-pill text-amber-400 bg-amber-500/10 border-amber-500/20">{{ $t }}</span>
+                            @foreach($project['stack'] as $tech)
+                            <span class="tech-pill {{ $project['pill'] }}">{{ $tech }}</span>
                             @endforeach
                         </div>
-                    </div>
 
-                    {{-- PROJECT 3: Jenz Audio --}}
-                    <div class="project-card card-glow-green reveal" style="transition-delay:0.1s">
-                        <div class="flex items-start justify-between mb-4">
-                            <div>
-                                <p class="text-xs text-gray-600 uppercase tracking-wider mb-1">Business Website</p>
-                                <h3 class="text-xl font-bold text-white">Jenz Audio</h3>
-                            </div>
-                            <span class="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 border border-green-500/20 px-2.5 py-1 rounded-full shrink-0 ml-2">
-                                <span class="dot dot-active"></span> Active
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                            Website dan platform digital untuk mendukung branding, pemasaran, dan katalog produk Jenz Audio.
-                        </p>
-                        <ul class="space-y-1">
-                            @foreach(['Product Showcase','Landing Page','Digital Catalog','Marketing Optimization'] as $f)
-                            <li class="flex items-center gap-2 text-xs text-gray-500">
-                                <span class="text-green-500">▸</span> {{ $f }}
-                            </li>
-                            @endforeach
-                        </ul>
-                    </div>
+                        <div class="mt-5 flex items-center justify-between gap-3">
+                            @if(count($project['images']))
+                            <span class="text-xs text-gray-600">{{ count($project['images']) }} screenshots</span>
+                            @else
+                            <span class="text-xs text-gray-600">Project detail</span>
+                            @endif
 
-                    {{-- PROJECT 4: Event Ticketing --}}
-                    <div class="project-card card-glow-violet reveal" style="transition-delay:0.15s">
-                        <div class="flex items-start justify-between mb-4">
-                            <div>
-                                <p class="text-xs text-gray-600 uppercase tracking-wider mb-1">Event Management</p>
-                                <h3 class="text-xl font-bold text-white">Event Ticketing System</h3>
-                            </div>
-                               <span class="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 border border-green-500/20 px-2.5 py-1 rounded-full shrink-0 ml-2">
-                                <span class="dot dot-active"></span> Active
-                            </span>
+                            @if($project['link'])
+                            <a href="{{ $project['link'] }}" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="Open {{ $project['title'] }} live site">
+                                Live site
+                                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/>
+                                </svg>
+                            </a>
+                            @endif
                         </div>
-                        <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                            Platform manajemen event dan ticketing yang membantu proses registrasi, monitoring peserta, dan pengelolaan tiket secara digital.
-                        </p>
-                        <ul class="space-y-1">
-                            @foreach(['Event Management','Ticket Registration','Participant Dashboard','Reporting','Analytics'] as $f)
-                            <li class="flex items-center gap-2 text-xs text-gray-500">
-                                <span class="text-violet-500">▸</span> {{ $f }}
-                            </li>
-                            @endforeach
-                        </ul>
-                    </div>
-
-                    {{-- PROJECT 5:  POS --}}
-                    <div class="project-card card-glow-rose reveal" style="transition-delay:0.2s">
-                        <div class="flex items-start justify-between mb-4">
-                            <div>
-                                <p class="text-xs text-gray-600 uppercase tracking-wider mb-1">Restaurant POS</p>
-                                <h3 class="text-xl font-bold text-white"> POS System</h3>
-                            </div>
-                         <span class="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 border border-green-500/20 px-2.5 py-1 rounded-full shrink-0 ml-2">
-                                <span class="dot dot-active"></span> Active
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                            Sistem POS restoran untuk membantu operasional bisnis mulai dari pemesanan hingga laporan penjualan.
-                        </p>
-                        <ul class="space-y-1">
-                            @foreach(['Order Management','Cashier System','Menu Management','Sales Report','Operational Dashboard'] as $f)
-                            <li class="flex items-center gap-2 text-xs text-gray-500">
-                                <span class="text-rose-500">▸</span> {{ $f }}
-                            </li>
-                            @endforeach
-                        </ul>
-                    </div>
-
-                    {{-- PROJECT 6: SuperSave --}}
-                    <div class="project-card card-glow-sky reveal" style="transition-delay:0.25s">
-                        <div class="flex items-start justify-between mb-4">
-                            <div>
-                                <p class="text-xs text-gray-600 uppercase tracking-wider mb-1">Business System</p>
-                                <h3 class="text-xl font-bold text-white">SuperSave</h3>
-                            </div>
-                            <span class="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 border border-green-500/20 px-2.5 py-1 rounded-full shrink-0 ml-2">
-                                <span class="dot dot-active"></span> Active
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                            Platform yang berfokus pada efisiensi pengelolaan data bisnis, dashboard monitoring, dan workflow operasional.
-                        </p>
-                        <ul class="space-y-1">
-                            @foreach(['Dashboard','Reporting','Data Management','Business Workflow'] as $f)
-                            <li class="flex items-center gap-2 text-xs text-gray-500">
-                                <span class="text-sky-500">▸</span> {{ $f }}
-                            </li>
-                            @endforeach
-                        </ul>
-                    </div>
-
-                    {{-- PROJECT 7: Premium Digital Invitation --}}
-                    <div class="project-card card-glow-violet reveal" style="transition-delay:0.3s">
-                        <div class="flex items-start justify-between mb-4">
-                            <div>
-                                <p class="text-xs text-gray-600 uppercase tracking-wider mb-1">Digital Product</p>
-                                <h3 class="text-xl font-bold text-white">Premium Digital Invitation</h3>
-                            </div>
-                            <span class="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 border border-green-500/20 px-2.5 py-1 rounded-full shrink-0 ml-2">
-                                <span class="dot dot-active"></span> Active
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                            Platform undangan digital premium dengan berbagai tema eksklusif dan pengalaman interaktif modern.
-                        </p>
-                        <ul class="space-y-1 mb-4">
-                            @foreach(['Batavia Royale','Exclusive Andalusia','Jawa Exclusive','Custom Premium Themes'] as $f)
-                            <li class="flex items-center gap-2 text-xs text-gray-500">
-                                <span class="text-violet-400">▸</span> {{ $f }}
-                            </li>
-                            @endforeach
-                        </ul>
-                        <div class="flex flex-wrap gap-1.5 pt-4 border-t border-white/5">
-                            @foreach(['Premium Animation','Interactive','Mobile First'] as $t)
-                            <span class="tech-pill text-violet-400 bg-violet-500/10 border-violet-500/20">{{ $t }}</span>
-                            @endforeach
-                        </div>
-                    </div>
-
+                    </article>
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -557,7 +803,60 @@
 
     </main>
 
+    <div class="project-modal" id="project-modal" aria-hidden="true">
+        <div class="project-modal__backdrop" data-modal-close></div>
+        <div class="project-modal__panel" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
+            <button type="button" class="project-modal__close" data-modal-close aria-label="Close preview">
+                <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                </svg>
+            </button>
+
+            <div class="project-modal__media">
+                <div class="project-modal__stage">
+                    <button type="button" class="project-modal__nav prev" data-gallery-prev aria-label="Previous screenshot">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <img id="project-modal-image" src="" alt="">
+                    <button type="button" class="project-modal__nav next" data-gallery-next aria-label="Next screenshot">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="project-modal__thumbs" id="project-modal-thumbs"></div>
+            </div>
+
+            <aside class="project-modal__side">
+                <p class="section-label mb-3" id="project-modal-category"></p>
+                <h3 class="text-2xl font-bold text-white mb-3" id="project-modal-title"></h3>
+                <p class="text-sm text-gray-400 leading-relaxed mb-5" id="project-modal-description"></p>
+
+                <div class="mb-6">
+                    <p class="text-xs uppercase tracking-wider text-gray-600 mb-3">Highlights</p>
+                    <ul class="space-y-2" id="project-modal-features"></ul>
+                </div>
+
+                <div class="mb-6">
+                    <p class="text-xs uppercase tracking-wider text-gray-600 mb-3">Stack</p>
+                    <div class="flex flex-wrap gap-1.5" id="project-modal-stack"></div>
+                </div>
+
+                <a id="project-modal-link" href="#" target="_blank" rel="noopener noreferrer" class="project-link hidden">
+                    Visit live site
+                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/>
+                    </svg>
+                </a>
+            </aside>
+        </div>
+    </div>
+
 <script>
+const projectData = @json($projects);
+
 // ---- TERMINAL DATA ----
 const lines = [
     { d: 200,  type: 'prompt', text: 'whoami' },
@@ -570,12 +869,13 @@ const lines = [
     { d: 2500, type: 'gap' },
     { d: 2700, type: 'prompt', text: 'current_projects' },
     { d: 3200, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#4ade80">Reconext</span>                 <span style="color:#374151">[active]</span>' },
-    { d: 3350, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#fbbf24">Catetin</span>                  <span style="color:#374151">[building]</span>' },
-    { d: 3500, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#4ade80">Jenz Audio</span>               <span style="color:#374151">[active]</span>' },
+    { d: 3350, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#4ade80">Jenz Audio</span>               <span style="color:#374151">[active]</span>' },
+    { d: 3500, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#22d3ee">Morizono</span>                 <span style="color:#374151">[active]</span>' },
     { d: 3650, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#818cf8">Event Ticketing System</span>   <span style="color:#374151">[active]</span>' },
-    { d: 3800, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#f87171"> POS System</span>             <span style="color:#374151">[active]</span>' },
-    { d: 3950, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#38bdf8">SuperSave</span>                <span style="color:#374151">[active]</span>' },
-    { d: 4100, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#a78bfa">Premium Digital Invitation</span> <span style="color:#374151">[active]</span>' },
+    { d: 3800, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#f87171">Restaurant POS</span>           <span style="color:#374151">[active]</span>' },
+    { d: 3950, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#38bdf8">RSMS / HRIS / Garuda Club</span> <span style="color:#374151">[active]</span>' },
+    { d: 4100, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#38bdf8">SuperSave</span>                <span style="color:#374151">[active]</span>' },
+    { d: 4250, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#fbbf24">Catetin</span>                  <span style="color:#374151">[building]</span>' },
     { d: 4500, type: 'gap' },
     { d: 4700, type: 'prompt', text: 'stack' },
     { d: 5200, type: 'out',    text: '<span style="color:#f87171">Laravel</span>  <span style="color:#f472b6">Livewire</span>  <span style="color:#60a5fa">MySQL</span> <span style="color:#34d399">PHP</span> <span style="color:#fbbf24">JavaScript</span>' },
@@ -640,6 +940,112 @@ document.querySelectorAll('.project-card').forEach(card => {
         card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
         card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
     });
+});
+
+// ---- PROJECT GALLERY MODAL ----
+const modal = document.getElementById('project-modal');
+const modalImage = document.getElementById('project-modal-image');
+const modalThumbs = document.getElementById('project-modal-thumbs');
+const modalTitle = document.getElementById('project-modal-title');
+const modalCategory = document.getElementById('project-modal-category');
+const modalDescription = document.getElementById('project-modal-description');
+const modalFeatures = document.getElementById('project-modal-features');
+const modalStack = document.getElementById('project-modal-stack');
+const modalLink = document.getElementById('project-modal-link');
+const modalPrev = document.querySelector('[data-gallery-prev]');
+const modalNext = document.querySelector('[data-gallery-next]');
+let activeProject = null;
+let activeImageIndex = 0;
+
+function setActiveImage(index) {
+    if (!activeProject || !activeProject.images.length) return;
+
+    activeImageIndex = (index + activeProject.images.length) % activeProject.images.length;
+    modalImage.src = activeProject.images[activeImageIndex];
+    modalImage.alt = `${activeProject.title} screenshot ${activeImageIndex + 1}`;
+
+    modalThumbs.querySelectorAll('.project-modal__thumb').forEach((thumb, thumbIndex) => {
+        thumb.classList.toggle('active', thumbIndex === activeImageIndex);
+        if (thumbIndex === activeImageIndex) thumb.scrollIntoView({ inline: 'center', block: 'nearest' });
+    });
+}
+
+function openProjectModal(project) {
+    if (!project.images.length) return;
+
+    activeProject = project;
+    activeImageIndex = 0;
+    modalTitle.textContent = project.title;
+    modalCategory.textContent = project.category;
+    modalDescription.textContent = project.description;
+
+    modalFeatures.innerHTML = project.features.map(feature => (
+        `<li class="flex items-center gap-2 text-sm text-gray-400"><span class="${project.accent}">▸</span>${feature}</li>`
+    )).join('');
+
+    modalStack.innerHTML = project.stack.map(tech => (
+        `<span class="tech-pill ${project.pill}">${tech}</span>`
+    )).join('');
+
+    if (project.link) {
+        modalLink.href = project.link;
+        modalLink.classList.remove('hidden');
+    } else {
+        modalLink.classList.add('hidden');
+    }
+
+    modalThumbs.innerHTML = project.images.map((src, index) => (
+        `<button type="button" class="project-modal__thumb" data-thumb-index="${index}" aria-label="Show screenshot ${index + 1}">
+            <img src="${src}" alt="">
+        </button>`
+    )).join('');
+
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    setActiveImage(0);
+    modal.querySelector('.project-modal__close').focus();
+}
+
+function closeProjectModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    modalImage.src = '';
+    activeProject = null;
+}
+
+document.querySelectorAll('.project-card[data-project-index]').forEach(card => {
+    const project = projectData[Number(card.dataset.projectIndex)];
+    if (!project || !project.images.length) return;
+
+    card.addEventListener('click', e => {
+        if (e.target.closest('a')) return;
+        openProjectModal(project);
+    });
+
+    card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openProjectModal(project);
+        }
+    });
+});
+
+modalThumbs.addEventListener('click', e => {
+    const thumb = e.target.closest('[data-thumb-index]');
+    if (thumb) setActiveImage(Number(thumb.dataset.thumbIndex));
+});
+
+modalPrev.addEventListener('click', () => setActiveImage(activeImageIndex - 1));
+modalNext.addEventListener('click', () => setActiveImage(activeImageIndex + 1));
+document.querySelectorAll('[data-modal-close]').forEach(el => el.addEventListener('click', closeProjectModal));
+
+document.addEventListener('keydown', e => {
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') closeProjectModal();
+    if (e.key === 'ArrowLeft') setActiveImage(activeImageIndex - 1);
+    if (e.key === 'ArrowRight') setActiveImage(activeImageIndex + 1);
 });
 
 // ---- SMOOTH SCROLL ----
