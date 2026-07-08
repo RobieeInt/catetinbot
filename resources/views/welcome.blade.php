@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robby Hernowo — Full Stack Developer</title>
-    <meta name="description" content="Full Stack Developer · Laravel Specialist · AI & Automation Enthusiast">
+    <meta name="description" content="Full Stack Developer · Laravel & API Specialist · Mobile App Developer · AI & Automation Enthusiast">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root {
@@ -373,6 +373,8 @@
                 <div class="flex flex-wrap justify-center gap-2 mb-8">
                     <span class="tech-pill text-blue-400 bg-blue-500/10 border-blue-500/20">Full Stack Developer</span>
                     <span class="tech-pill text-violet-400 bg-violet-500/10 border-violet-500/20">Laravel Specialist</span>
+                    <span class="tech-pill text-cyan-400 bg-cyan-500/10 border-cyan-500/20">RESTful API Integration</span>
+                    <span class="tech-pill text-green-400 bg-green-500/10 border-green-500/20">Flutter & React Native</span>
                     <span class="tech-pill text-pink-400 bg-pink-500/10 border-pink-500/20">AI & Automation Enthusiast</span>
                 </div>
                 <p class="text-gray-400 text-base sm:text-lg leading-relaxed max-w-xl mx-auto mb-12">
@@ -417,7 +419,7 @@
                             Saya adalah <span class="text-white font-semibold">Full Stack Developer</span> yang fokus membangun solusi digital yang sederhana, cepat, dan benar-benar digunakan.
                         </p>
                         <p>
-                            Mulai dari website company profile, dashboard administrasi, sistem bisnis custom, hingga integrasi AI dan automasi workflow menggunakan <span class="text-white">Laravel, Livewire, Telegram Bot,</span> dan berbagai teknologi modern lainnya.
+                            Mulai dari website company profile, dashboard administrasi, sistem bisnis custom, RESTful API untuk aplikasi mobile, hingga integrasi AI dan automasi workflow menggunakan <span class="text-white">Laravel, Livewire, Flutter, React Native, Telegram Bot,</span> dan berbagai teknologi modern lainnya.
                         </p>
                         <p>
                             Selain membangun produk untuk klien melalui <span class="text-white font-medium">Reconext</span>, saya juga aktif mengembangkan berbagai project pribadi untuk mengeksplorasi teknologi terbaru dan meningkatkan efisiensi proses bisnis.
@@ -433,6 +435,9 @@
                             ['Laravel',          'Backend & Full-stack Framework', 'text-red-400',    'bg-red-500/10',    'border-red-500/20'],
                             ['Livewire',         'Reactive UI without SPA',        'text-pink-400',   'bg-pink-500/10',   'border-pink-500/20'],
                             ['MySQL',            'Relational Database',            'text-blue-400',   'bg-blue-500/10',   'border-blue-500/20'],
+                            ['RESTful API',      'Backend API & Third-party Integration', 'text-cyan-400', 'bg-cyan-500/10', 'border-cyan-500/20'],
+                            ['Flutter',          'Cross-platform Mobile Apps',     'text-sky-400',    'bg-sky-500/10',    'border-sky-500/20'],
+                            ['React Native',     'Mobile App Development',         'text-indigo-400', 'bg-indigo-500/10', 'border-indigo-500/20'],
                             ['Gemini AI',        'AI Integration & OCR',           'text-violet-400', 'bg-violet-500/10', 'border-violet-500/20'],
                             ['Telegram Bot API', 'Automation & Messaging',         'text-cyan-400',   'bg-cyan-500/10',   'border-cyan-500/20'],
                             ['Tailwind CSS',     'Utility-first Styling',          'text-teal-400',   'bg-teal-500/10',   'border-teal-500/20'],
@@ -478,7 +483,7 @@
                     'link' => 'https://reconext.id/',
                     'description' => 'Digital agency untuk website, landing page, sistem bisnis custom, automasi workflow, dan integrasi AI untuk UMKM maupun perusahaan.',
                     'features' => ['Company Profile', 'Service Landing Page', 'Lead Capture', 'Automation Offering', 'AI Integration'],
-                    'stack' => ['Laravel', 'Blade', 'Tailwind CSS', 'JavaScript', 'WhatsApp CTA'],
+                    'stack' => ['Laravel', 'Blade', 'RESTful API', 'Tailwind CSS', 'JavaScript', 'WhatsApp CTA'],
                 ],
                 [
                     'slug' => 'jenzaudio',
@@ -493,7 +498,7 @@
                     'link' => 'https://jenzaudiogs.com/',
                     'description' => 'Website bisnis untuk branding, product showcase, dan katalog digital Jenz Audio dengan tampilan visual yang fokus ke konversi.',
                     'features' => ['Product Showcase', 'Digital Catalog', 'Landing Page', 'Responsive UI', 'Marketing Optimization'],
-                    'stack' => ['Laravel', 'Blade', 'Tailwind CSS', 'JavaScript', 'SEO Basics'],
+                    'stack' => ['Laravel', 'Blade', 'RESTful API', 'Tailwind CSS', 'JavaScript', 'SEO Basics'],
                 ],
                 [
                     'slug' => 'morizono',
@@ -508,7 +513,7 @@
                     'link' => 'https://morizono.co.id/',
                     'description' => 'Website properti premium untuk Morizono Japanese Living, lengkap dengan unit types, facilities, development progress, updates, dan lead form.',
                     'features' => ['Unit Types', 'Facilities Showcase', 'News & Updates', 'Contact Form', 'WhatsApp Lead'],
-                    'stack' => ['Laravel', 'Blade', 'Tailwind CSS', 'JavaScript', 'Content Pages'],
+                    'stack' => ['Laravel', 'Blade', 'RESTful API', 'Tailwind CSS', 'JavaScript', 'Content Pages'],
                 ],
                 [
                     'slug' => 'eventicketing',
@@ -523,7 +528,7 @@
                     'link' => null,
                     'description' => 'Platform manajemen event dan ticketing untuk registrasi, monitoring peserta, pengelolaan tiket, serta reporting operasional.',
                     'features' => ['Event Management', 'Ticket Registration', 'Participant Dashboard', 'Check-in Flow', 'Reporting'],
-                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'QR Workflow', 'Admin Dashboard'],
+                    'stack' => ['Laravel', 'Livewire', 'RESTful API', 'MySQL', 'QR Workflow', 'Admin Dashboard'],
                 ],
                 [
                     'slug' => 'restaurantpos',
@@ -538,7 +543,7 @@
                     'link' => null,
                     'description' => 'Sistem POS restoran untuk operasional kasir, pemesanan, menu, meja, pembayaran, hingga laporan penjualan.',
                     'features' => ['Order Management', 'Cashier System', 'Menu Management', 'Sales Report', 'Operational Dashboard'],
-                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'Tailwind CSS', 'Role Access'],
+                    'stack' => ['Laravel', 'Livewire', 'RESTful API', 'MySQL', 'Tailwind CSS', 'Role Access'],
                 ],
                 [
                     'slug' => 'rsms',
@@ -553,7 +558,7 @@
                     'link' => null,
                     'description' => 'Sistem dashboard operasional untuk pengelolaan data bisnis, monitoring workflow, dan reporting internal.',
                     'features' => ['Dashboard', 'Data Management', 'Reporting', 'Workflow Monitoring', 'Admin Tools'],
-                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'Tailwind CSS', 'Charts'],
+                    'stack' => ['Laravel', 'Livewire', 'RESTful API', 'MySQL', 'Tailwind CSS', 'Charts'],
                 ],
                 [
                     'slug' => 'hris',
@@ -568,7 +573,7 @@
                     'link' => null,
                     'description' => 'Human resource information system untuk membantu pengelolaan data karyawan, attendance, request, dan dashboard HR.',
                     'features' => ['Employee Data', 'Attendance', 'Leave Request', 'HR Dashboard', 'Role Access'],
-                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'Tailwind CSS', 'Admin Panel'],
+                    'stack' => ['Laravel', 'Livewire', 'RESTful API', 'MySQL', 'Tailwind CSS', 'Admin Panel'],
                 ],
                 [
                     'slug' => 'garudaclub',
@@ -583,7 +588,7 @@
                     'link' => null,
                     'description' => 'Platform membership dan dashboard komunitas dengan modul data member, benefit, dan pengelolaan aktivitas.',
                     'features' => ['Member Management', 'Dashboard', 'Activity Data', 'Benefit Tracking', 'Admin Tools'],
-                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'Tailwind CSS', 'Dashboard UI'],
+                    'stack' => ['Laravel', 'Livewire', 'RESTful API', 'MySQL', 'Tailwind CSS', 'Dashboard UI'],
                 ],
                 [
                     'slug' => null,
@@ -598,7 +603,7 @@
                     'link' => 'https://supersave.id/',
                     'description' => 'Website company/product untuk solusi energi, katalog produk, insight artikel, testimoni, dan konsultasi via WhatsApp.',
                     'features' => ['Product Catalog', 'Blog & News', 'Testimonials', 'WhatsApp Consultation', 'Responsive Landing'],
-                    'stack' => ['Laravel', 'Blade', 'Tailwind CSS', 'JavaScript', 'Content Management'],
+                    'stack' => ['Laravel', 'Blade', 'RESTful API', 'Tailwind CSS', 'JavaScript', 'Content Management'],
                 ],
                 [
                     'slug' => null,
@@ -613,7 +618,7 @@
                     'link' => null,
                     'description' => 'Aplikasi pencatat keuangan berbasis Telegram Bot dan Dashboard Web yang memahami teks, voice note, dan foto struk menggunakan AI.',
                     'features' => ['OCR Receipt', 'Voice Note Processing', 'Budget Tracking', 'Savings Goal', 'Auto Recap'],
-                    'stack' => ['Laravel', 'Livewire', 'MySQL', 'Telegram Bot', 'Gemini AI'],
+                    'stack' => ['Laravel', 'Livewire', 'RESTful API', 'MySQL', 'Telegram Bot', 'Gemini AI'],
                 ],
             ];
 
@@ -865,7 +870,9 @@ const lines = [
     { d: 1300, type: 'prompt', text: 'role' },
     { d: 1800, type: 'out',    text: '<span style="color:#60a5fa">Full Stack Developer</span>' },
     { d: 1970, type: 'out',    text: '<span style="color:#a78bfa">Laravel Specialist</span>' },
-    { d: 2140, type: 'out',    text: '<span style="color:#f472b6">AI & Automation Enthusiast</span>' },
+    { d: 2140, type: 'out',    text: '<span style="color:#22d3ee">RESTful API & Integration Developer</span>' },
+    { d: 2310, type: 'out',    text: '<span style="color:#4ade80">Flutter / React Native Mobile Developer</span>' },
+    { d: 2480, type: 'out',    text: '<span style="color:#f472b6">AI & Automation Enthusiast</span>' },
     { d: 2500, type: 'gap' },
     { d: 2700, type: 'prompt', text: 'current_projects' },
     { d: 3200, type: 'out',    text: '<span style="color:#6b7280">→</span> <span style="color:#4ade80">Reconext</span>                 <span style="color:#374151">[active]</span>' },
@@ -879,14 +886,16 @@ const lines = [
     { d: 4500, type: 'gap' },
     { d: 4700, type: 'prompt', text: 'stack' },
     { d: 5200, type: 'out',    text: '<span style="color:#f87171">Laravel</span>  <span style="color:#f472b6">Livewire</span>  <span style="color:#60a5fa">MySQL</span> <span style="color:#34d399">PHP</span> <span style="color:#fbbf24">JavaScript</span>' },
-    { d: 5380, type: 'out',    text: '<span style="color:#34d399">Telegram Bot</span>  <span style="color:#a78bfa">Gemini AI</span>  <span style="color:#2dd4bf">Tailwind CSS</span>' },
-    { d: 5550, type: 'out',    text: '<span style="color:#fbbf24">Other Tools:</span> Redis, Docker, GitHub Actions, Vercel, Railway' },
-    { d: 5700, type: 'gap' },
-    { d: 5900, type: 'prompt', text: 'currently_building' },
+    { d: 5380, type: 'out',    text: '<span style="color:#22d3ee">RESTful API</span>  <span style="color:#38bdf8">API Integration</span>  <span style="color:#4ade80">Flutter</span>  <span style="color:#818cf8">React Native</span>' },
+    { d: 5550, type: 'out',    text: '<span style="color:#34d399">Telegram Bot</span>  <span style="color:#a78bfa">Gemini AI</span>  <span style="color:#2dd4bf">Tailwind CSS</span>' },
+    { d: 5720, type: 'out',    text: '<span style="color:#fbbf24">Other Tools:</span> Redis, Docker, GitHub Actions, Vercel, Railway' },
+    { d: 5900, type: 'gap' },
+    { d: 6100, type: 'prompt', text: 'currently_building' },
     { d: 6400, type: 'out',    text: '<span style="color:#94a3b8">Business Systems</span>' },
     { d: 6550, type: 'out',    text: '<span style="color:#94a3b8">AI Products</span>' },
-    { d: 6700, type: 'out',    text: '<span style="color:#94a3b8">Automation Tools</span>' },
-    { d: 6850, type: 'out',    text: '<span style="color:#94a3b8">Digital Experiences</span>' },
+    { d: 6700, type: 'out',    text: '<span style="color:#94a3b8">Mobile Apps</span>' },
+    { d: 6850, type: 'out',    text: '<span style="color:#94a3b8">Automation Tools</span>' },
+    { d: 7000, type: 'out',    text: '<span style="color:#94a3b8">Digital Experiences</span>' },
     { d: 7200, type: 'gap' },
     { d: 7400, type: 'prompt', text: 'mission' },
     { d: 7900, type: 'out',    text: '<span style="color:#f1f5f9;font-style:italic">Build products people actually use.</span>' },
