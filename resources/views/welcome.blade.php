@@ -798,7 +798,7 @@
                     <span class="text-gray-700">·</span>
                     <span class="text-xs text-gray-600">Robby Hernowo</span>
                 </div>
-                <p class="text-xs text-gray-700">Built with Laravel & shipped with ☕</p>
+                <p class="text-xs text-gray-700"></p>
                 <a href="{{ route('dashboard.login') }}"
                    class="text-xs text-gray-500 hover:text-white border border-white/8 hover:border-white/20 px-4 py-1.5 rounded-lg transition-all">
                     Dashboard →
