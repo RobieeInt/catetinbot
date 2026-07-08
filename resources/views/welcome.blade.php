@@ -484,7 +484,7 @@
         {{-- ================================================================ --}}
         @php
             $projectImages = function (string $slug) {
-                $files = glob(public_path("project/{$slug}/*.{png,jpg,jpeg,webp}"), GLOB_BRACE) ?: [];
+                $files = glob(public_path("project/{$slug}/*.webp")) ?: [];
                 natsort($files);
 
                 return array_map(
