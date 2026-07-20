@@ -6,6 +6,7 @@
     <title>Robby Hernowo — Full Stack Developer</title>
     <meta name="description" content="Full Stack Developer · Laravel & API Specialist · Mobile App Developer · AI & Automation Enthusiast">
     <link rel="canonical" href="{{ url('/') }}">
+    <meta name="google-site-verification" content="aNLVD6O3hBFTzcVN19JheIr5g7kNk5xaLr1lZ5JWtnk" />
 
     {{-- Favicon --}}
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon-32.png') }}">
