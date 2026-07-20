@@ -29,6 +29,7 @@ cp -r public/img img
 cp public/.htaccess .htaccess
 cp public/robots.txt robots.txt
 cp public/sitemap.xml sitemap.xml
+cp public/google*.html . 2>/dev/null || true
 
 echo "==> Refresh cache..."
 php artisan config:clear
