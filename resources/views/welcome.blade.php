@@ -5,6 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robby Hernowo — Full Stack Developer</title>
     <meta name="description" content="Full Stack Developer · Laravel & API Specialist · Mobile App Developer · AI & Automation Enthusiast">
+
+    {{-- Favicon --}}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon-32.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('img/favicon-192.png') }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('img/favicon-512.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/apple-touch-icon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('img/favicon-32.png') }}">
+    <meta name="theme-color" content="#080808">
+
+    {{-- Open Graph / Twitter Card --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:title" content="Robby Hernowo — Full Stack Developer">
+    <meta property="og:description" content="Full Stack Developer · Laravel & API Specialist · Mobile App Developer · AI & Automation Enthusiast">
+    <meta property="og:image" content="{{ asset('img/og-image.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Robby Hernowo — Full Stack Developer">
+    <meta name="twitter:description" content="Full Stack Developer · Laravel & API Specialist · Mobile App Developer · AI & Automation Enthusiast">
+    <meta name="twitter:image" content="{{ asset('img/og-image.png') }}">
+
+    {{-- Structured data --}}
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "Person",
+        "name": "Robby Hernowo",
+        "jobTitle": "Full Stack Developer",
+        "url": "{{ url('/') }}",
+        "email": "mailto:robbyhernowo@gmail.com",
+        "image": "{{ asset('img/robby.webp') }}",
+        "sameAs": [
+            "https://www.linkedin.com/in/robby-hernowo-5b003b1b3/"
+        ],
+        "knowsAbout": ["Laravel", "RESTful API", "Flutter", "React Native", "AI Automation"]
+    }
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root {
