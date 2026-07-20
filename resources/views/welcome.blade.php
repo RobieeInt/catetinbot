@@ -8,12 +8,14 @@
     <link rel="canonical" href="{{ url('/') }}">
     <meta name="google-site-verification" content="aNLVD6O3hBFTzcVN19JheIr5g7kNk5xaLr1lZ5JWtnk" />
 
-    {{-- Favicon --}}
+    {{-- Favicon — Google requires multiples of 48px for search result icons --}}
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon-32.png') }}">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('img/favicon-48.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('img/favicon-96.png') }}">
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('img/favicon-192.png') }}">
     <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('img/favicon-512.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/apple-touch-icon.png') }}">
-    <link rel="shortcut icon" href="{{ asset('img/favicon-32.png') }}">
+    <link rel="shortcut icon" href="{{ asset('img/favicon-48.png') }}">
     <meta name="theme-color" content="#080808">
 
     {{-- Open Graph / Twitter Card --}}
