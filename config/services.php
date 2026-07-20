@@ -46,4 +46,16 @@ return [
         'model' => env('GEMINI_MODEL', 'gemini-2.5-flash'),
     ],
 
+    'notification' => [
+        'channel' => env('NOTIFICATION_CHANNEL', 'telegram'),
+    ],
+
+    'whatsapp' => [
+        'access_token'         => env('WHATSAPP_ACCESS_TOKEN'),
+        'phone_number_id'      => env('WHATSAPP_PHONE_NUMBER_ID'),
+        'recipient_phone'      => env('WHATSAPP_RECIPIENT_PHONE'),
+        'webhook_verify_token' => env('WHATSAPP_WEBHOOK_VERIFY_TOKEN', 'catetin_verify_token'),
+        'app_secret'           => env('WHATSAPP_APP_SECRET'),
+    ],
+
 ];

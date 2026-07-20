@@ -298,6 +298,51 @@
             backdrop-filter: blur(8px);
         }
 
+        /* ---- HERO PHOTO ---- */
+        .hero-photo-wrap { position: relative; width: min(300px, 72vw); }
+        .hero-photo-glow {
+            position: absolute; inset: -30px;
+            background: radial-gradient(circle, rgba(96,165,250,0.25) 0%, rgba(167,139,250,0.15) 45%, transparent 70%);
+            filter: blur(40px);
+            z-index: 0;
+        }
+        .hero-photo-card {
+            position: relative;
+            z-index: 1;
+            aspect-ratio: 4 / 5;
+            border-radius: 28px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(96,165,250,0.12);
+            background: rgba(15,15,18,0.6);
+        }
+        .hero-photo-card img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: top center;
+            display: block;
+        }
+        .hero-photo-card::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.55) 100%);
+            pointer-events: none;
+        }
+        .hero-photo-badge {
+            position: absolute;
+            left: 50%;
+            bottom: -18px;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: inline-flex; align-items: center; gap: 8px;
+            white-space: nowrap;
+            background: rgba(10,10,12,0.9);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px; padding: 8px 18px;
+            font-size: 12px; color: #d1d5db;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
         /* ---- SECTION LABEL ---- */
         .section-label {
             font-size: 11px; text-transform: uppercase;
@@ -384,36 +429,56 @@
         {{-- ================================================================ --}}
         {{-- HERO --}}
         {{-- ================================================================ --}}
-        <section class="min-h-[92vh] flex items-center justify-center px-4 sm:px-6 py-24">
-            <div class="max-w-3xl mx-auto text-center">
-                <div class="hero-badge mb-8">
-                    <span class="dot dot-building"></span>
-                    Currently building · Open for projects
-                </div>
-                <h1 class="text-5xl sm:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
-                    Robby<br>
-                    <span style="background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Hernowo</span>
-                </h1>
-                <div class="flex flex-wrap justify-center gap-2 mb-8">
-                    <span class="tech-pill text-blue-400 bg-blue-500/10 border-blue-500/20">Full Stack Developer</span>
-                    <span class="tech-pill text-violet-400 bg-violet-500/10 border-violet-500/20">Laravel Specialist</span>
-                    <span class="tech-pill text-cyan-400 bg-cyan-500/10 border-cyan-500/20">RESTful API Integration</span>
-                    <span class="tech-pill text-green-400 bg-green-500/10 border-green-500/20">Flutter & React Native</span>
-                    <span class="tech-pill text-pink-400 bg-pink-500/10 border-pink-500/20">AI & Automation Enthusiast</span>
-                </div>
-                <p class="text-gray-400 text-base sm:text-lg leading-relaxed max-w-xl mx-auto mb-12">
-                    Membangun solusi digital yang
-                    <span class="text-white font-medium">sederhana, cepat, dan benar-benar digunakan.</span>
-                </p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <a href="#projects"
-                       class="bg-white text-black font-semibold px-7 py-3 rounded-xl hover:bg-gray-100 transition-colors text-sm">
-                        Lihat Projects
-                    </a>
-                    <a href="#about"
-                       class="border border-white/10 text-gray-300 font-medium px-7 py-3 rounded-xl hover:border-white/25 hover:text-white transition-all text-sm">
-                        Tentang Saya
-                    </a>
+        <section class="relative min-h-[92vh] flex items-center px-4 sm:px-6 py-24 overflow-hidden">
+            <div class="relative z-10 max-w-6xl mx-auto w-full">
+                <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-16 lg:gap-10 items-center">
+
+                    <div class="text-center lg:text-left order-2 lg:order-1">
+                        <div class="hero-badge mb-8">
+                            <span class="dot dot-building"></span>
+                            Currently building · Open for projects
+                        </div>
+
+                        <h1 class="text-5xl sm:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
+                            Robby<br>
+                            <span style="background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Hernowo</span>
+                        </h1>
+                        <div class="flex flex-wrap justify-center lg:justify-start gap-2 mb-8">
+                            <span class="tech-pill text-blue-400 bg-blue-500/10 border-blue-500/20">Full Stack Developer</span>
+                            <span class="tech-pill text-violet-400 bg-violet-500/10 border-violet-500/20">Laravel Specialist</span>
+                            <span class="tech-pill text-cyan-400 bg-cyan-500/10 border-cyan-500/20">RESTful API Integration</span>
+                            <span class="tech-pill text-green-400 bg-green-500/10 border-green-500/20">Flutter & React Native</span>
+                            <span class="tech-pill text-pink-400 bg-pink-500/10 border-pink-500/20">AI & Automation Enthusiast</span>
+                        </div>
+                        <p class="text-gray-400 text-base sm:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0 mb-12">
+                            Membangun solusi digital yang
+                            <span class="text-white font-medium">sederhana, cepat, dan benar-benar digunakan.</span>
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                            <a href="#projects"
+                               class="bg-white text-black font-semibold px-7 py-3 rounded-xl hover:bg-gray-100 transition-colors text-sm">
+                                Lihat Projects
+                            </a>
+                            <a href="#about"
+                               class="border border-white/10 text-gray-300 font-medium px-7 py-3 rounded-xl hover:border-white/25 hover:text-white transition-all text-sm">
+                                Tentang Saya
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center order-1 lg:order-2">
+                        <div class="hero-photo-wrap">
+                            <div class="hero-photo-glow"></div>
+                            <div class="hero-photo-card">
+                                <img src="{{ asset('img/robby.webp') }}" alt="Robby Hernowo">
+                            </div>
+                            <div class="hero-photo-badge">
+                                <span class="dot dot-active"></span>
+                                Available for freelance
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="mt-20 flex justify-center">
