@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robby Hernowo — Full Stack Developer</title>
     <meta name="description" content="Full Stack Developer · Laravel & API Specialist · Mobile App Developer · AI & Automation Enthusiast">
+    <link rel="canonical" href="{{ url('/') }}">
 
     {{-- Favicon --}}
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon-32.png') }}">

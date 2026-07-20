@@ -23,6 +23,13 @@ cp -r public/build build
 cp -r public/project project
 cp -r public/img img
 
+# .htaccess & robots.txt di root ini cuma copy plain dari public/ (belum pernah
+# di-custom), aman disinkron otomatis. index.php SENGAJA tidak disentuh —
+# path-nya udah disesuaikan manual buat struktur flat (public_html = root app).
+cp public/.htaccess .htaccess
+cp public/robots.txt robots.txt
+cp public/sitemap.xml sitemap.xml
+
 echo "==> Refresh cache..."
 php artisan config:clear
 php artisan config:cache

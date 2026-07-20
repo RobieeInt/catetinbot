@@ -1,2 +1,4 @@
 User-agent: *
 Disallow:
+
+Sitemap: https://robbyhernowo.my.id/sitemap.xml
